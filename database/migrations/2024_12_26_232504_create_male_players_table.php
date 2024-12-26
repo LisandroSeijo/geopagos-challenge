@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('players', function (Blueprint $table) {
+        Schema::create('male_players', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->tinyInteger('ability');
-            $table->enum('gender', ['male', 'female']);
-            $table->string('type');
+            $table->tinyInteger('power');
+            $table->tinyInteger('speed');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('players');
+        Schema::dropIfExists('male_players');
     }
 };

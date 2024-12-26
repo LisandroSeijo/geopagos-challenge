@@ -7,6 +7,13 @@ use DateTime;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'players')]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([
+    'player' => Player::class,
+    'male_player' => MalePlayer::class,
+    'female_player' => FemalePlayer::class,
+])]
 class Player
 {
     #[ORM\Id]
@@ -91,5 +98,17 @@ class Player
     public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+    
+    #[ORM\PrePersist]
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime("now");
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate()
+    {
+        $this->updatedAt = new \DateTime("now");
     }
 }

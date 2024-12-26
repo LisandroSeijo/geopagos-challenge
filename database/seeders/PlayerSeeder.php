@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use ATP\Entities\FemalePlayer;
+use ATP\Entities\MalePlayer;
 use ATP\Repositories\PersistRepository;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
-use ATP\Entities\Player;
 use ATP\Entities\Gender;
 
 class PlayerSeeder extends Seeder
@@ -20,10 +21,21 @@ class PlayerSeeder extends Seeder
         $faker = Faker::create(); 
         
         foreach(range(1, 100) as $index) {
-            $player = new Player(
+            $player = new MalePlayer(
                 $faker->name(),
                 $faker->numberBetween(1, 100),
                 $faker->randomElement([Gender::MALE, Gender::FEMALE]),
+                $faker->numberBetween(1,100),
+                $faker->numberBetween(1,100)
+            );
+
+            $this->persistRepository->persist($player);
+
+            $player = new FemalePlayer(
+                $faker->name(),
+                $faker->numberBetween(1, 100),
+                $faker->randomElement([Gender::MALE, Gender::FEMALE]),
+                $faker->numberBetween(1,100),
             );
 
             $this->persistRepository->persist($player);
