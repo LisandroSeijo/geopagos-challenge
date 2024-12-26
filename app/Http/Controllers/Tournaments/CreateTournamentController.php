@@ -17,7 +17,10 @@ class CreateTournamentController extends Controller {
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false]);
+            return response()->json([
+                'success' => false,
+                'errors'=> $validator->errors(),
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
         
         $createTournamentService->excecute($createTournamentRequest);

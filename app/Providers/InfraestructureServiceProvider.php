@@ -6,7 +6,7 @@ use App\Infraestructure\DB\Doctrine\DoctrineTournamentRepository;
 use ATP\Repositories\PersistRepository;
 use Illuminate\Support\ServiceProvider;
 use ATP\Repositories\TournamentRepository;
-use App\Infraestructure\Doctrine\DoctrinePersistRepository;
+use App\Infraestructure\DB\Doctrine\DoctrinePersistRepository;
 
 class InfraestructureServiceProvider extends ServiceProvider
 {

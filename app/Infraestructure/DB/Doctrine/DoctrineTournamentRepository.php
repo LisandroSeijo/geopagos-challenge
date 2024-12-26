@@ -21,4 +21,8 @@ class DoctrineTournamentRepository extends DoctrineRepository implements Tournam
         
         return $this->paginate($queryBulder, $paginate);
     }
+
+    public function findById(int $id): ?Tournament {
+        return $this->find($id);
+    }
 }
