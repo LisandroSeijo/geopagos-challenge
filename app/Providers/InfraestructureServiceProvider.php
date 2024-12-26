@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Infraestructure\Doctrine\DoctrineTournamentRepository;
+use App\Infraestructure\DB\Doctrine\DoctrineTournamentRepository;
 use ATP\Repositories\PersistRepository;
 use Illuminate\Support\ServiceProvider;
 use ATP\Repositories\TournamentRepository;
