@@ -16,8 +16,12 @@ class Tournament
     #[ORM\Column(type: 'string')]
     private string $name;
 
-    public function __construct(string $name) {
+    #[ORM\Column(type: 'string', enumType: Gender::class)]
+    private Gender $gender;
+
+    public function __construct(string $name, Gender $gender) {
         $this->name = $name;
+        $this->gender = $gender;
     }
 
     // Getters y Setters
@@ -34,5 +38,15 @@ class Tournament
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getGender(): Gender
+    {
+        return $this->gender;
+    }
+
+    public function setGender(Gender $gender): void
+    {
+        $this->gender = $gender;
     }
 }

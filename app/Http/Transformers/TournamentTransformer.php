@@ -9,6 +9,7 @@ class TournamentTransformer {
         return [
             'id' => $tournament->getId(),
             'name' => $tournament->getName(),
+            'gender' => $tournament->getGender()
         ];
     }
 

@@ -16,6 +16,7 @@ class CreateTournamentService {
     public function excecute(CreateTournamentPayload $createTournamentPayload): Tournament {
         $tournament = new Tournament(
             $createTournamentPayload->name(),
+            $createTournamentPayload->gender(),
         );
 
         $this->persistRepository->persist($tournament);

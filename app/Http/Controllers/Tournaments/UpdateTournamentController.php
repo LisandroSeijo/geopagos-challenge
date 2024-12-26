@@ -6,6 +6,8 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateTournamentRequest;
 use ATP\Services\Tournaments\UpdateTournamentService;
+use Illuminate\Validation\Rule;
+use ATP\Entities\Gender;
 
 class UpdateTournamentController extends Controller {   
     public function handle(
@@ -14,7 +16,8 @@ class UpdateTournamentController extends Controller {
         UpdateTournamentService $updateTournamentService
     ): JsonResponse {
         $validator = $this->validator->make($updateTournamentRequest->request()->all(), [
-            'name' => 'required|string|max:1',
+            'name' => 'required|string|max:255',
+            'gender' => ['required', Rule::in(Gender::cases())]
         ]);
 
         if ($validator->fails()) {
