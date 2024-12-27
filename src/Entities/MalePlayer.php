@@ -21,7 +21,6 @@ class MalePlayer extends Player
         $this->speed = $speed;
     }
 
-    // Getters y Setters
     public function getPower(): int
     {
         return $this->power;
@@ -40,17 +39,5 @@ class MalePlayer extends Player
     public function setMovementSpeed(int $speed): void
     {
         $this->speed = $speed;
-    }
-
-    #[ORM\PrePersist]
-    public function onPrePersist()
-    {
-        $this->createdAt = new \DateTime("now");
-    }
-
-    #[ORM\PreUpdate]
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTime("now");
     }
 }

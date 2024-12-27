@@ -24,7 +24,6 @@ class Tournament
         $this->gender = $gender;
     }
 
-    // Getters y Setters
     public function getId(): int
     {
         return $this->id;

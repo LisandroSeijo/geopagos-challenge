@@ -36,7 +36,6 @@ class Player
     #[ORM\Column(type: 'datetime', name: 'updated_at')]
     private DateTime $updatedAt;
 
-    // Constructor
     public function __construct(string $name, $ability, Gender $gender)
     {
         $this->name = $name;
@@ -44,7 +43,6 @@ class Player
         $this->gender = $gender;
     }
 
-    // Getters y Setters
     public function getId(): int
     {
         return $this->id;

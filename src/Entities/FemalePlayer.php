@@ -16,7 +16,6 @@ class FemalePlayer extends Player
         $this->reaction = $reaction;
     }
 
-    // Getters y Setters
     public function getReaction(): int
     {
         return $this->reaction;
