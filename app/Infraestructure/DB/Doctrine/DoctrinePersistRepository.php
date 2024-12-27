@@ -19,4 +19,9 @@ class DoctrinePersistRepository implements PersistRepository
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
+
+    public function transactional(callable $function): void
+    {
+        $this->entityManager->getConnection()->transactional($function);
+    }
 }

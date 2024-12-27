@@ -8,6 +8,8 @@ use App\Http\Requests\CreateTournamentRequest;
 use ATP\Services\Tournaments\CreateTournamentService;
 use Illuminate\Validation\Rule;
 use ATP\Entities\Gender;
+use App\Validations\ArraySize;
+use App\Validations\UniqueIds;
 
 class CreateTournamentController extends Controller {   
     public function handle(
@@ -15,8 +17,11 @@ class CreateTournamentController extends Controller {
         CreateTournamentService $createTournamentService
     ): JsonResponse {
         $validator = $this->validator->make($createTournamentRequest->request()->all(), [
-            'name' => 'required|string|max:255',
-            'gender' => ['required', Rule::in(Gender::cases())]
+            CreateTournamentRequest::NAME => 'required|string|max:255',
+            CreateTournamentRequest::GENDER => ['required', Rule::in(Gender::cases())],
+            CreateTournamentRequest::PLAYERS =>  [
+                'required', 'array', new ArraySize([2, 4, 8]), new UniqueIds
+            ],
         ]);
 
         if ($validator->fails()) {

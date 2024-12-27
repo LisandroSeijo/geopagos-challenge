@@ -10,6 +10,7 @@ use Illuminate\Validation\Factory as ValidationFactory;
 class CreateTournamentRequest implements CreateTournamentPayload {
     const NAME = 'name';
     const GENDER = 'gender';
+    const PLAYERS = 'players';
     private Request $request;
     private ValidationFactory $validation;
 
@@ -27,5 +28,12 @@ class CreateTournamentRequest implements CreateTournamentPayload {
 
     public function gender(): Gender {
         return Gender::from($this->request->input(self::GENDER));
+    }
+    /**
+     * 
+     * @return int[]
+     */
+    public function players(): array {
+        return $this->request->input(self::PLAYERS); 
     }
 }

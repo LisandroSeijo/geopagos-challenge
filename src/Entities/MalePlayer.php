@@ -3,7 +3,6 @@
 namespace ATP\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'male_players')]
