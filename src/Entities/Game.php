@@ -31,6 +31,10 @@ class Game {
     #[ORM\Column(type: "integer")]
     private int $phase;
 
+    #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[ORM\JoinColumn(name: "winner", referencedColumnName: "id", nullable: false)]
+    private Player $winner;
+
     public function __construct(Tournament $tournament, Player $playerOne, Player $playerTwo, int $phase) {
         $this->tournament = $tournament;
         $this->playerOne = $playerOne;
@@ -87,5 +91,15 @@ class Game {
     public function getPhase(): int
     {
         return $this->phase;
+    }
+
+    public function setWinner(Player $winner): void
+    {
+        $this->winner = $winner;
+    }
+
+    public function getWinner(): Player
+    {
+        return $this->winner;
     }
 }

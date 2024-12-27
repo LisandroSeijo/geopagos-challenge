@@ -27,6 +27,9 @@ class Tournament
     #[ORM\Column(type: 'integer')]
     private int $phases;
 
+    #[ORM\Column(type: 'integer')]
+    private int $actualPhase;
+
     #[ORM\Column(type: "datetime", name: "created_at")]
     private \DateTime $createdAt;
 
@@ -34,11 +37,12 @@ class Tournament
     #[ORM\OneToMany(targetEntity: Game::class, mappedBy: "match", cascade: ["persist", "remove"])]
     private Collection $games;
 
-    public function __construct(string $name, Gender $gender, int $countPlayers, int $phases) {
+    public function __construct(string $name, Gender $gender, int $countPlayers, int $phases, int $actualPhase) {
         $this->name = $name;
         $this->gender = $gender;
         $this->countPlayers = $countPlayers;
         $this->phases = $phases;
+        $this->actualPhase = $actualPhase;
         $this->createdAt = new DateTime("now");
     }
 
@@ -94,5 +98,17 @@ class Tournament
 
     public function getPhases(): int {
         return $this->phases;
+    }
+
+    public function setActualPhase(int $actualPhases): void {
+        $this->actualPhases = $actualPhases;
+    }
+
+    public function getActualPhase(): int {
+        return $this->actualPhase;
+    }
+
+    public function setNextPhase():void {
+        $this->actualPhase++;
     }
 }
