@@ -21,7 +21,8 @@ class CreateGameService {
         $game = new Game(
             $createGamePayload->tournament(),
             $createGamePayload->playerOne(),
-            $createGamePayload->playerTwo()
+            $createGamePayload->playerTwo(),
+            $createGamePayload->phase()
         );
 
         $this->persistRepository->persist($game);

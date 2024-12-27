@@ -11,4 +11,6 @@ interface CreateGamePayload {
     public function playerOne(): Player;
 
     public function playerTwo(): Player;
+
+    public function phase(): int;
 }

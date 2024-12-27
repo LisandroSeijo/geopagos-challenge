@@ -17,6 +17,8 @@ class CreateTournamentService {
 
     protected CreateGameService $createGameService;
 
+    private array $players;
+
     public function __construct(
         PersistRepository $persistRepository, 
         PlayerRepository $playerRepository,
@@ -34,18 +36,22 @@ class CreateTournamentService {
             $tournament = new Tournament(
                 $createTournamentPayload->name(),
                 $createTournamentPayload->gender(),
+                $createTournamentPayload->playersCount(),
+                // -1 fast fix
+                $createTournamentPayload->phases() - 1,
             );
     
             $this->persistRepository->persist($tournament);
             $x = 0;
-            $players = $createTournamentPayload->players();
+            $this->players = $createTournamentPayload->players();
+            $actualPhase = $createTournamentPayload->phases() - 1;
 
             while ($x < $this->countGames($createTournamentPayload->players())) {
                 $playerOne = $this->playerRepository->findById(
-                    $this->getPlayerId($players)
+                    $this->getPlayerId()
                 );
                 $playerTwo = $this->playerRepository->findById(
-                    $this->getPlayerId($players)
+                    $this->getPlayerId()
                 );
 
                 if ($tournament->getGender() !== $playerOne->getGender()) {
@@ -56,7 +62,12 @@ class CreateTournamentService {
                     throw new AssignInvalidGenderException("No se puede agregar uplayern player {$playerOne->getGender()->value} en este torneo");
                 }
 
-                $createGameDTO = new CreateGameDTO($tournament, $playerOne, $playerTwo);
+                $createGameDTO = new CreateGameDTO(
+                    $tournament, 
+                    $playerOne, 
+                    $playerTwo, 
+                    $actualPhase
+                );
 
                 $this->createGameService->excecute($createGameDTO);
 
@@ -68,15 +79,15 @@ class CreateTournamentService {
     }
 
     private function countGames(array $players): int {
-        return count($players) / 2;
+        return floor(count($players) / 2);
     }
 
-    private function getPlayerId(array $players): int {
-        // feo...
-        $index = rand(0, count($players) -1);
-        $id = $players[$index];
+    private function getPlayerId(): int {
+        // feo pero funciona...
+        $index = array_rand($this->players, 1);
+        $id = $this->players[$index];
 
-        array_splice($players, $index, 1);
+        unset($this->players[$index]);
 
         return $id;
     }

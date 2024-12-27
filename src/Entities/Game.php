@@ -3,6 +3,7 @@
 namespace ATP\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 #[ORM\Entity]
 #[ORM\Table(name: "games")]
@@ -27,10 +28,15 @@ class Game {
     #[ORM\JoinColumn(name: "tournament_id", referencedColumnName: "id", nullable: false)]
     private Tournament $tournament;
 
-    public function __construct(Tournament $tournament, Player $playerOne, Player $playerTwo) {
+    #[ORM\Column(type: "integer")]
+    private int $phase;
+
+    public function __construct(Tournament $tournament, Player $playerOne, Player $playerTwo, int $phase) {
         $this->tournament = $tournament;
         $this->playerOne = $playerOne;
         $this->playerTwo = $playerTwo;
+        $this->phase = $phase;
+        $this->createdAt = new DateTime("now");
     }
 
     public function getId(): int
@@ -71,5 +77,15 @@ class Game {
     public function getTournament(): Tournament
     {
         return $this->tournament;
+    }
+
+    public function setPhase(int $phase): void
+    {
+        $this->phase = $phase;
+    }
+
+    public function getPhase(): int
+    {
+        return $this->phase;
     }
 }

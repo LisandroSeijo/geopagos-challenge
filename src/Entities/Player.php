@@ -41,6 +41,7 @@ class Player
         $this->name = $name;
         $this->ability = $ability;
         $this->gender = $gender;
+        $this->createdAt = new DateTime("now");
     }
 
     public function getId(): int

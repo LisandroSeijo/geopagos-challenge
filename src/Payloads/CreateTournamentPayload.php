@@ -13,4 +13,8 @@ interface CreateTournamentPayload {
      * @return int[]
      */
     public function players(): array;
+
+    public function playersCount(): int;
+
+    public function phases(): int;
 }
