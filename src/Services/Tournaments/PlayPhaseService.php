@@ -2,6 +2,7 @@
 
 namespace ATP\Services\Tournaments;
 
+use ATP\Entities\Game;
 use ATP\Entities\Tournament;
 use ATP\Exceptions\ResourceNotFoundException;
 use ATP\Payloads\PlayPhasePayload;
@@ -29,29 +30,25 @@ class PlayPhaseService {
 
     public function excecute(PlayPhasePayload $playPhasePayload): Tournament {
         $tournament = $this->tournamentRepository->findById($playPhasePayload->tournamentId());
-        $winnersIds = [];
         
         if (!$tournament) {
             throw new ResourceNotFoundException('Tournament not found');
         }
 
-        $actualPhase = $tournament->getActualPhase();
+        $winnersIds = [];
         
-        $games = $this->gameRepository->listByTournamentAndPhase($tournament->getId(), $actualPhase);
+        $games = $this->gameRepository->listByTournamentAndPhase($tournament->getId(), $tournament->getActualPhase());
         $playGame = new PlayGame($tournament->getGender());
         
         foreach($games as $game) {
-            $winner = $playGame->play($game->getPlayerOne(), $game->getPlayerTwo());
-            $game->setWinner($winner);
-            
-            $this->persistRepository->persist($game);
+            $winner = $this->play($playGame, $game);
             
             $winnersIds[] = $winner->getId();
         }
 
         if ($tournament->inFinalPhase()) {
             $tournament->setWinner($winner);
-            $this->persistRepository->persist($game);
+            $this->persistRepository->persist($tournament);
             
             return $tournament;
         }
@@ -73,5 +70,14 @@ class PlayPhaseService {
         $this->createPhaseService->excecute($createPhaseDTO);
 
         return $tournament;
+    }
+
+    private function play(PlayGame $playGame, Game $game) {
+        $winner = $playGame->play($game->getPlayerOne(), $game->getPlayerTwo());
+        $game->setWinner($winner);
+        
+        $this->persistRepository->persist($game);
+
+        return $winner;
     }
 }

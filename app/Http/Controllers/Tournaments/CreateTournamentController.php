@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tournaments;
 
+use App\Http\Transformers\TournamentTransformer;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTournamentRequest;
@@ -14,7 +15,8 @@ use App\Validations\UniqueIds;
 class CreateTournamentController extends Controller {   
     public function handle(
         CreateTournamentRequest $createTournamentRequest, 
-        CreateTournamentService $createTournamentService
+        CreateTournamentService $createTournamentService,
+        TournamentTransformer $tournamentTransformer
     ): JsonResponse {
         $validator = $this->validator->make($createTournamentRequest->request()->all(), [
             CreateTournamentRequest::NAME => 'required|string|max:255',
@@ -31,9 +33,12 @@ class CreateTournamentController extends Controller {
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
         
-        $createTournamentService->excecute($createTournamentRequest);
+        $tournament = $createTournamentService->excecute($createTournamentRequest);
         
-        return response()->json(['success' => true], JsonResponse::HTTP_CREATED);
+        return response()->json([
+            'success' => true, 
+            'data' => $tournamentTransformer->transform($tournament)
+        ], JsonResponse::HTTP_CREATED);
     }
 }
     

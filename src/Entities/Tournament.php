@@ -38,8 +38,8 @@ class Tournament
     private Collection $games;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[ORM\JoinColumn(name: "winner", referencedColumnName: "id", nullable: false)]
-    private Player $winner;
+    #[ORM\JoinColumn(name: "winner", referencedColumnName: "id", nullable: true)]
+    private ?Player $winner = null;
 
     public function __construct(string $name, Gender $gender, int $countPlayers, int $phases, int $actualPhase) {
         $this->name = $name;
@@ -116,6 +116,16 @@ class Tournament
         $this->actualPhase++;
     }
 
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
     public function getNextPhase(): int {
         return $this->actualPhase + 1;
     }
@@ -125,7 +135,7 @@ class Tournament
         $this->winner = $winner;
     }
 
-    public function getWinner(): Player
+    public function getWinner(): ?Player
     {
         return $this->winner;
     }

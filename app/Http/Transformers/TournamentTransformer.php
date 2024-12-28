@@ -5,11 +5,22 @@ namespace App\Http\Transformers;
 use ATP\Entities\Tournament;
 
 class TournamentTransformer {
+    private PlayerTransformer $playerTransformer;
+
+    public function __construct(PlayerTransformer $playerTransformer) {
+        $this->playerTransformer = $playerTransformer;
+    }
+
     public function transform(Tournament $tournament): array {
         return [
             'id' => $tournament->getId(),
             'name' => $tournament->getName(),
-            'gender' => $tournament->getGender()
+            'gender' => $tournament->getGender(),
+            'count_players' => $tournament->getCountPlayers(),
+            'phases' => $tournament->getPhases(),
+            'actual_phase' => $tournament->getActualPhase(),
+            'created_at' => $tournament->getCreatedAt(),
+            'winner' => $tournament->getWinner() ? $this->playerTransformer->transform($tournament->getWinner()): null,
         ];
     }
 
