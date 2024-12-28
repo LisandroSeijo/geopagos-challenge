@@ -25,8 +25,8 @@ class Game {
     private \DateTime $createdAt;
 
     #[ORM\ManyToOne(targetEntity: Tournament::class, inversedBy: "games")]
-    #[ORM\JoinColumn(name: "tournament_id", referencedColumnName: "id", nullable: false)]
-    private Tournament $tournament;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tournament $tournament = null;
 
     #[ORM\Column(type: "integer")]
     private int $phase;

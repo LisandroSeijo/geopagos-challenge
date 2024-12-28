@@ -2,6 +2,7 @@
 
 namespace ATP\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
@@ -37,7 +38,7 @@ class Tournament
     private \DateTime $createdAt;
 
 
-    #[ORM\OneToMany(targetEntity: Game::class, mappedBy: "match", cascade: ["persist", "remove"])]
+    #[ORM\OneToMany(mappedBy: "tournament", targetEntity: Game::class, cascade: ["persist", "remove"])]
     private Collection $games;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
@@ -52,6 +53,7 @@ class Tournament
         $this->actualPhase = $actualPhase;
         $this->status = $status;
         $this->createdAt = new DateTime("now");
+        $this->games = new ArrayCollection();
     }
 
     public function getId(): int
@@ -78,7 +80,7 @@ class Tournament
     {
         $this->gender = $gender;
     }
-
+    
     public function getGames(): Collection
     {
         return $this->games;

@@ -3,12 +3,16 @@
 namespace App\Http\Transformers;
 
 use ATP\Entities\Tournament;
+use ATP\Entities\Game;
 
 class TournamentTransformer {
     private PlayerTransformer $playerTransformer;
 
-    public function __construct(PlayerTransformer $playerTransformer) {
+    private GameTransformer $gameTransformer;
+
+    public function __construct(PlayerTransformer $playerTransformer, GameTransformer $gameTransformer) {
         $this->playerTransformer = $playerTransformer;
+        $this->gameTransformer = $gameTransformer;
     }
 
     public function transform(Tournament $tournament): array {
@@ -22,6 +26,7 @@ class TournamentTransformer {
             'status' => $tournament->getStatus(),
             'created_at' => $tournament->getCreatedAt(),
             'winner' => $tournament->getWinner() ? $this->playerTransformer->transform($tournament->getWinner()): null,
+            'phases_desctiption' => $this->phases($tournament)
         ];
     }
 
@@ -29,5 +34,25 @@ class TournamentTransformer {
         return array_map(function(Tournament $tournament) {
             return $this->transform($tournament);
         }, $tournaments);
+    }
+
+    private function phases(Tournament $tournament): array {
+        $phasesDescription = [];
+        $phases = $tournament->getPhases();
+        $actualPhase = 1;
+
+        while ($actualPhase < $phases) {
+            $games = $tournament->getGames()->filter(function(Game $game) use($actualPhase) {
+                return $game->getPhase() === $actualPhase;
+            })->toArray();
+
+            $phasesDescription[] = [
+                'phase' => $actualPhase,
+                'games' => $this->gameTransformer->map($games)
+            ];
+            $actualPhase++;
+        }
+
+        return $phasesDescription;
     }
 }

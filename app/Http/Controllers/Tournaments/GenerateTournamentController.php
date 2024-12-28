@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tournaments;
 
-use App\Http\Transformers\TournamentTransformer;
+use App\Http\Transformers\PlayerTransformer;
 use ATP\Services\Tournaments\PlayPhaseService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -19,7 +19,7 @@ class GenerateTournamentController extends Controller {
         CreateTournamentRequest $createTournamentRequest, 
         CreateTournamentService $createTournamentService,
         PlayPhaseService $playPhaseService,
-        TournamentTransformer $tournamentTransformer
+        PlayerTransformer $playerTransformer,
     ): JsonResponse {
         $validator = $this->validator->make($createTournamentRequest->request()->all(), [
             CreateTournamentRequest::NAME => 'required|string|max:255',
@@ -43,11 +43,12 @@ class GenerateTournamentController extends Controller {
         while (!$tournament->isFinished()) {
             $tournament = $playPhaseService->excecute($playPhaseDTO);
         }
-        
-        
+
         return response()->json([
             'success' => true, 
-            'data' => $tournamentTransformer->transform($tournament)
+            'data' => [
+                'winner' => $playerTransformer->transform($tournament->getWinner())
+            ]
         ], JsonResponse::HTTP_CREATED);
     }
 }
