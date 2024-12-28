@@ -8,9 +8,9 @@ use ATP\Repositories\PersistRepository;
 use ATP\Repositories\PlayerRepository;
 use ATP\Exceptions\AssignInvalidGenderException;
 use ATP\Services\Games\CreateGameService;
-use ATP\Payloads\CreateNextPhasePayload;
+use ATP\Payloads\CreatePhasePayload;
 
-class CreateNextPhaseService {
+class CreatePhaseService {
     protected PersistRepository $persistRepository;
 
     protected PlayerRepository $playerRepository;
@@ -29,13 +29,12 @@ class CreateNextPhaseService {
         $this->createGameService = $createGameService;
     }
 
-    public function excecute(CreateNextPhasePayload $createNextPhasePayload): Tournament {
-        $tournament = null;
+    public function excecute(CreatePhasePayload $createPhasePayload): Tournament {
+        $tournament = $createPhasePayload->tournament();
 
-        $this->persistRepository->transactional(function() use(&$tournament, $createNextPhasePayload) {
-            $endGames = $this->countGames($createNextPhasePayload->players());
-            $tournament = $createNextPhasePayload->tournament();
-            $this->players = $createNextPhasePayload->players();
+        $this->persistRepository->transactional(function() use($tournament, $createPhasePayload) {
+            $endGames = $this->countGames($createPhasePayload->players());
+            $this->players = $createPhasePayload->players();
             $x = 0;
 
             while ($x < $endGames) {
@@ -58,7 +57,7 @@ class CreateNextPhaseService {
                     $tournament, 
                     $playerOne, 
                     $playerTwo, 
-                    $createNextPhasePayload->phase()
+                    $createPhasePayload->phase()
                 );
 
                 $this->createGameService->excecute($createGameDTO);

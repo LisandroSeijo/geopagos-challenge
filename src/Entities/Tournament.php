@@ -108,7 +108,11 @@ class Tournament
         return $this->actualPhase;
     }
 
-    public function setNextPhase():void {
+    public function setNextPhase(): void {
         $this->actualPhase++;
+    }
+
+    public function getNextPhase(): int {
+        return $this->actualPhase + 1;
     }
 }

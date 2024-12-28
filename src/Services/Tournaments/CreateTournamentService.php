@@ -2,7 +2,7 @@
 
 namespace ATP\Services\Tournaments;
 
-use ATP\DTO\CreateNextPhaseDTO;
+use ATP\DTO\CreatePhaseDTO;
 use ATP\Entities\Tournament;
 use ATP\Repositories\PersistRepository;
 use ATP\Payloads\CreateTournamentPayload;
@@ -16,7 +16,7 @@ class CreateTournamentService {
 
     protected CreateGameService $createGameService;
 
-    protected CreateNextPhaseService $createNextPhaseService;
+    protected CreatePhaseService $createPhaseService;
 
 
     private array $players;
@@ -25,12 +25,12 @@ class CreateTournamentService {
         PersistRepository $persistRepository, 
         PlayerRepository $playerRepository,
         CreateGameService $createGameService,
-        CreateNextPhaseService $createNextPhaseService
+        CreatePhaseService $createPhaseService
     ) {
         $this->persistRepository = $persistRepository;
         $this->playerRepository = $playerRepository;
         $this->createGameService = $createGameService;
-        $this->createNextPhaseService = $createNextPhaseService;
+        $this->createPhaseService = $createPhaseService;
     }
 
     public function excecute(CreateTournamentPayload $createTournamentPayload): Tournament {
@@ -38,25 +38,26 @@ class CreateTournamentService {
 
         $this->persistRepository->transactional(function() use(&$tournament, $createTournamentPayload) {
             // -1 fast fix
-            $actualPhase = $createTournamentPayload->phases() - 1;
+            $phases = $createTournamentPayload->phases() - 1;
+            $actualPhase = 1;
 
             $tournament = new Tournament(
                 $createTournamentPayload->name(),
                 $createTournamentPayload->gender(),
                 $createTournamentPayload->playersCount(),
-                $actualPhase,
-                1
+                $phases,
+                $actualPhase
             );
     
             $this->persistRepository->persist($tournament);
             
-            $createNextPhase = new CreateNextPhaseDTO(
+            $createPhaseDTO = new CreatePhaseDTO(
                 $tournament,
                 $createTournamentPayload->players(),
                 $actualPhase
             );
             
-            $this->createNextPhaseService->excecute($createNextPhase);
+            $this->createPhaseService->excecute($createPhaseDTO);
         });
 
         return $tournament;

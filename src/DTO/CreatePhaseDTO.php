@@ -3,9 +3,9 @@
 namespace ATP\DTO;
 
 use ATP\Entities\Tournament;
-use ATP\Payloads\CreateNextPhasePayload;
+use ATP\Payloads\CreatePhasePayload;
 
-class CreateNextPhaseDTO implements CreateNextPhasePayload {
+class CreatePhaseDTO implements CreatePhasePayload {
     private array $players;
 
     private Tournament $tournament;

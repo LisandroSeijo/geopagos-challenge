@@ -4,7 +4,7 @@ namespace ATP\Payloads;
 
 use ATP\Entities\Tournament;
 
-interface CreateNextPhasePayload {
+interface CreatePhasePayload {
     /**
      * @return int[]
      */

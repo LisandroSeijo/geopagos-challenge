@@ -110,4 +110,8 @@ class Player
     {
         $this->updatedAt = new \DateTime("now");
     }
+
+    public function getLucky(): int {
+        return rand(1, 10);
+    }
 }
