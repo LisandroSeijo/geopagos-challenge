@@ -1,11 +1,8 @@
 <?php
 
-namespace ATP\Entities\Battle;
+namespace ATP\Util\Tournaments;
 
 use ATP\Entities\Gender;
-use ATP\Util\Tournament\GameStrategy;
-use ATP\Util\Tournament\MaleGame;
-use ATP\Util\Tournament\FemaleGame;
 
 class GameStrategyFactory
 {
@@ -13,7 +10,7 @@ class GameStrategyFactory
     {
         $gameStrategy = null;
 
-        switch ($gender->value) {
+        switch ($gender) {
             case Gender::MALE:
                 $gameStrategy = new MaleGame();
                 break;

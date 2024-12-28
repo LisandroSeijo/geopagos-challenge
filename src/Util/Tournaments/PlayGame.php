@@ -1,8 +1,7 @@
 <?php
 
-namespace ATP\Util\Tournament;
+namespace ATP\Util\Tournaments;
 
-use ATP\Entities\Battle\GameStrategyFactory;
 use ATP\Entities\Gender;
 use ATP\Entities\Player;
 

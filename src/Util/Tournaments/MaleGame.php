@@ -1,6 +1,6 @@
 <?php
 
-namespace ATP\Util\Tournament;
+namespace ATP\Util\Tournaments;
 
 use ATP\Entities\MalePlayer;
 use ATP\Entities\Player;

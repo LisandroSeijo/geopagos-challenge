@@ -115,4 +115,8 @@ class Tournament
     public function getNextPhase(): int {
         return $this->actualPhase + 1;
     }
+
+    public function inFinalPhase(): bool {
+        return $this->actualPhase === $this->phases;
+    }
 }

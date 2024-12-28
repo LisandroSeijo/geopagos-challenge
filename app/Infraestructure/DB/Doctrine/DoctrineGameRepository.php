@@ -12,7 +12,7 @@ class DoctrineGameRepository extends DoctrineRepository implements GameRepositor
     public function listByTournamentAndPhase(int $tournamentId, int $phase): array {
         $queryBuilder = $this->createQueryBuilder("g");
 
-        $queryBuilder->where('g.tournament.id = :tounamentId')
+        $queryBuilder->where('g.tournament = :tounamentId')
         ->setParameter('tounamentId', $tournamentId);
 
         $queryBuilder->andWhere('g.phase = :phase')

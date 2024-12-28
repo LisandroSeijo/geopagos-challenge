@@ -2,12 +2,14 @@
 
 namespace ATP\Services\Tournaments;
 
+use ATP\Entities\Tournament;
+use ATP\Exceptions\ResourceNotFoundException;
 use ATP\Payloads\PlayPhasePayload;
 use ATP\Repositories\GameRepository;
 use ATP\Repositories\PersistRepository;
 use ATP\Repositories\TournamentRepository;
-use ATP\Util\Tournament\PlayGame;
 use ATP\DTO\CreatePhaseDTO;
+use ATP\Util\Tournaments\PlayGame;
 
 class PlayPhaseService {
     private TournamentRepository $tournamentRepository;
@@ -25,16 +27,21 @@ class PlayPhaseService {
         $this->createPhaseService = $createPhaseService;
     }
 
-    public function excecute(PlayPhasePayload $playPhasePayload) {
+    public function excecute(PlayPhasePayload $playPhasePayload): Tournament {
         $winnersIds = [];
         $tournament = $this->tournamentRepository->findById($playPhasePayload->tournamentId());
+
+        if (!$tournament) {
+            throw new ResourceNotFoundException('Tournament not found');
+        }
+
         $actualPhase = $tournament->getActualPhase();
         
         $games = $this->gameRepository->listByTournamentAndPhase($tournament->getId(), $actualPhase);
-        $runGame = new PlayGame($tournament->getGender());
+        $playGame = new PlayGame($tournament->getGender());
         
         foreach($games as $game) {
-            $winner = $runGame->play($game->getPlayerOne(), $game->getPlayerTwo());
+            $winner = $playGame->play($game->getPlayerOne(), $game->getPlayerTwo());
             $game->setWinner($winner);
             
             $this->persistRepository->persist($game);
@@ -42,9 +49,18 @@ class PlayPhaseService {
             $winnersIds[] = $winner->getId();
         }
 
+        if ($tournament->inFinalPhase()) {
+            return $tournament;
+        }
+
         $tournament->setNextPhase();
         $this->persistRepository->persist($tournament);
 
+        // Acá se podría disparar un evento PhasePlayed 
+        // y un listener que lo escuche y tenga la lógica de chequear si 
+        // tiene que crear una siguiente fase o terminó.
+        // 
+        // Por falta de tiempo lo dejamos acá.
         $createPhaseDTO = new CreatePhaseDTO(
             $tournament,
             $winnersIds,
@@ -52,5 +68,7 @@ class PlayPhaseService {
         );
         
         $this->createPhaseService->excecute($createPhaseDTO);
+
+        return $tournament;
     }
 }
