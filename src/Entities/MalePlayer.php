@@ -14,8 +14,8 @@ class MalePlayer extends Player
     #[ORM\Column(type: 'integer')]
     private int $speed;
 
-    public function __construct(string $name, $ability, Gender $gender, int $power, int $speed) {
-        parent::__construct($name, $ability, $gender);
+    public function __construct(string $name, $ability, Gender $gender, string $email, int $power, int $speed) {
+        parent::__construct($name, $ability, $gender, $email);
         $this->power = $power;
         $this->speed = $speed;
     }

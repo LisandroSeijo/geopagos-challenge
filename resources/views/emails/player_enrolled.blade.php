@@ -1,0 +1,1 @@
+Hola {$name} tenés un nuevo partido asignado!

@@ -2,6 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    LaravelDoctrine\ORM\DoctrineServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
     App\Providers\InfraestructureServiceProvider::class,
+    LaravelDoctrine\ORM\DoctrineServiceProvider::class,
 ];

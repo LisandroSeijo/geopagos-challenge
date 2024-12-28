@@ -25,6 +25,7 @@ class PlayerSeeder extends Seeder
                 $faker->name(),
                 $faker->numberBetween(1, 100),
                 $faker->randomElement([Gender::MALE, Gender::FEMALE]),
+                $faker->email(),
                 $faker->numberBetween(1,100),
                 $faker->numberBetween(1,100)
             );
@@ -35,6 +36,7 @@ class PlayerSeeder extends Seeder
                 $faker->name(),
                 $faker->numberBetween(1, 100),
                 $faker->randomElement([Gender::MALE, Gender::FEMALE]),
+                $faker->email(),
                 $faker->numberBetween(1,100),
             );
 

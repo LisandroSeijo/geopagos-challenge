@@ -8,5 +8,7 @@ interface GameRepository extends Repository {
     /**
      * @return Game[]
      */
-    public function listByTournamentAndPhase(int $tournamentId, int $phaseId): array;
+    public function listByTournamentAndPhase(int $tournamentId, int $phase): array;
+
+    public function findById(int $id): ?Game;
 }

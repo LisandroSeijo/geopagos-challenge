@@ -11,8 +11,8 @@ class FemalePlayer extends Player
     #[ORM\Column(type: 'integer')]
     private int $reaction;
 
-    public function __construct(string $name, $ability, Gender $gender, int $reaction) {
-        parent::__construct($name, $ability, $gender);
+    public function __construct(string $name, $ability, Gender $gender, string $email, int $reaction) {
+        parent::__construct($name, $ability, $gender, $email);
         $this->reaction = $reaction;
     }
 

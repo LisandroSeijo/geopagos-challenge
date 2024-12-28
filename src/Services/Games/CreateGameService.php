@@ -2,6 +2,7 @@
 
 namespace ATP\Services\Games;
 
+use App\Events\GameCreatedEvent;
 use ATP\Exceptions\DuplicatePlayerException;
 use ATP\Payloads\CreateGamePayload;
 use ATP\Repositories\PersistRepository;
@@ -26,6 +27,8 @@ class CreateGameService {
         );
 
         $this->persistRepository->persist($game);
+
+        event(new GameCreatedEvent($game->getId()));
 
         return $game;
     }

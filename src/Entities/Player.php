@@ -30,17 +30,21 @@ class Player
     #[ORM\Column(type: 'string', enumType: Gender::class)]
     private Gender $gender;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $email;
+
     #[ORM\Column(type: 'datetime', name: 'created_at')]
     private DateTime $createdAt;
 
     #[ORM\Column(type: 'datetime', name: 'updated_at')]
     private DateTime $updatedAt;
 
-    public function __construct(string $name, $ability, Gender $gender)
+    public function __construct(string $name, $ability, Gender $gender, string $email)
     {
         $this->name = $name;
         $this->ability = $ability;
         $this->gender = $gender;
+        $this->email = $email;
         $this->createdAt = new DateTime("now");
     }
 
@@ -113,5 +117,15 @@ class Player
 
     public function getLucky(): int {
         return rand(1, 10);
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 }
