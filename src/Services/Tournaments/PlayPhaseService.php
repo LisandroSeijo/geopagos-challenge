@@ -5,6 +5,7 @@ namespace ATP\Services\Tournaments;
 use ATP\Entities\Game;
 use ATP\Entities\Tournament;
 use ATP\Exceptions\ResourceNotFoundException;
+use ATP\Exceptions\TournamentFinishedException;
 use ATP\Payloads\PlayPhasePayload;
 use ATP\Repositories\GameRepository;
 use ATP\Repositories\PersistRepository;
@@ -35,6 +36,10 @@ class PlayPhaseService {
             throw new ResourceNotFoundException('Tournament not found');
         }
 
+        if ($tournament->isFinished()) {
+            throw new TournamentFinishedException('Tournament is finished');
+        }
+
         $winnersIds = [];
         
         $games = $this->gameRepository->listByTournamentAndPhase($tournament->getId(), $tournament->getActualPhase());
@@ -48,15 +53,22 @@ class PlayPhaseService {
 
         if ($tournament->inFinalPhase()) {
             $tournament->setWinner($winner);
+            $tournament->setFinished();
             $this->persistRepository->persist($tournament);
             
             return $tournament;
         }
 
         $tournament->setNextPhase();
+
+        if ($tournament->isPending()) {
+            $tournament->setInProgress();
+        }
+
         $this->persistRepository->persist($tournament);
 
-        // Acá se podría disparar un evento PhasePlayed 
+        // Para respetar el principio de responsabilidad única
+        // acá se podría disparar un evento PhasePlayed 
         // y un listener que lo escuche y tenga la lógica de chequear si 
         // tiene que crear una siguiente fase o terminó.
         // 

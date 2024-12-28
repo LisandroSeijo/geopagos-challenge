@@ -4,6 +4,7 @@ namespace ATP\Services\Tournaments;
 
 use ATP\DTO\CreatePhaseDTO;
 use ATP\Entities\Tournament;
+use ATP\Entities\TournamentStatus;
 use ATP\Repositories\PersistRepository;
 use ATP\Payloads\CreateTournamentPayload;
 use ATP\Repositories\PlayerRepository;
@@ -44,6 +45,7 @@ class CreateTournamentService {
             $tournament = new Tournament(
                 $createTournamentPayload->name(),
                 $createTournamentPayload->gender(),
+                TournamentStatus::PENDING,
                 $createTournamentPayload->playersCount(),
                 $phases,
                 $actualPhase

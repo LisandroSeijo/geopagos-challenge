@@ -21,6 +21,9 @@ class Tournament
     #[ORM\Column(type: 'string', enumType: Gender::class)]
     private Gender $gender;
 
+    #[ORM\Column(type: 'string', enumType: TournamentStatus::class)]
+    private TournamentStatus $status;
+
     #[ORM\Column(type: 'integer')]
     private int $countPlayers;
 
@@ -41,12 +44,13 @@ class Tournament
     #[ORM\JoinColumn(name: "winner", referencedColumnName: "id", nullable: true)]
     private ?Player $winner = null;
 
-    public function __construct(string $name, Gender $gender, int $countPlayers, int $phases, int $actualPhase) {
+    public function __construct(string $name, Gender $gender, TournamentStatus $status, int $countPlayers, int $phases, int $actualPhase) {
         $this->name = $name;
         $this->gender = $gender;
         $this->countPlayers = $countPlayers;
         $this->phases = $phases;
         $this->actualPhase = $actualPhase;
+        $this->status = $status;
         $this->createdAt = new DateTime("now");
     }
 
@@ -140,7 +144,27 @@ class Tournament
         return $this->winner;
     }
 
+    public function getStatus(): TournamentStatus {
+        return $this->status;
+    }
+
     public function inFinalPhase(): bool {
         return $this->actualPhase === $this->phases;
+    }
+
+    public function isPending(): bool {
+        return $this->status === TournamentStatus::PENDING;
+    }
+
+    public function isFinished(): bool {
+        return $this->status === TournamentStatus::FINISHED;
+    }
+
+    public function setInProgress(): void {
+        $this->status = TournamentStatus::IN_PROGRESS;
+    }
+
+    public function setFinished(): void {
+        $this->status = TournamentStatus::FINISHED;
     }
 }

@@ -19,6 +19,7 @@ class TournamentTransformer {
             'count_players' => $tournament->getCountPlayers(),
             'phases' => $tournament->getPhases(),
             'actual_phase' => $tournament->getActualPhase(),
+            'status' => $tournament->getStatus(),
             'created_at' => $tournament->getCreatedAt(),
             'winner' => $tournament->getWinner() ? $this->playerTransformer->transform($tournament->getWinner()): null,
         ];
