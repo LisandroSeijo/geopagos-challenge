@@ -4,6 +4,7 @@ namespace ATP\Services\Tournaments;
 
 use ATP\DTO\CreateGameDTO;
 use ATP\Entities\Tournament;
+use ATP\Exceptions\ResourceNotFoundException;
 use ATP\Repositories\PersistRepository;
 use ATP\Repositories\PlayerRepository;
 use ATP\Exceptions\AssignInvalidGenderException;
@@ -44,6 +45,10 @@ class CreatePhaseService {
                 $playerTwo = $this->playerRepository->findById(
                     $this->getPlayerId()
                 );
+
+                if (!$playerOne || !$playerTwo) {
+                    throw new ResourceNotFoundException("Invalid players");   
+                }
 
                 if ($tournament->getGender() !== $playerOne->getGender()) {
                     throw new AssignInvalidGenderException("No se puede agregar un player {$playerOne->getGender()->value} en este torneo");

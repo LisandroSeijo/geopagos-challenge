@@ -1,0 +1,236 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ATP2",
+        "description": "Documentación de sistem de ATP",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/tournaments": {
+            "get": {
+                "tags": [
+                    "Tournaments"
+                ],
+                "summary": "Obtiene una lista de torneos",
+                "description": "Retorna una lista de torneos con opciones de filtrado, paginación y ordenación.",
+                "operationId": "getTournaments",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filtrar torneos por nombre",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de página para la paginación",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Número de elementos por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Campo por el cual ordenar los resultados",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "id"
+                        }
+                    },
+                    {
+                        "name": "sortOrder",
+                        "in": "query",
+                        "description": "Orden de clasificación (asc o desc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "desc"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de torneos obtenida exitosamente"
+                    },
+                    "400": {
+                        "description": "Parámetros de solicitud inválidos"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tournaments"
+                ],
+                "summary": "Crear un nuevo torneo",
+                "operationId": "4dbb0e5a70942f661dc274658f25ea52",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "gender"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Torneo de verano"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "female|male"
+                                    },
+                                    "players": {
+                                        "description": "Array de IDs de usuarios",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Crear torneo"
+                    }
+                }
+            }
+        },
+        "/tournaments/{id}": {
+            "get": {
+                "tags": [
+                    "Tournaments"
+                ],
+                "summary": "Obtiene un torneo por su ID",
+                "description": "Retorna los detalles de un torneo específico basado en su ID.",
+                "operationId": "getTournamentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del torneo a buscar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Torneo no encontrado"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        },
+        "/tournaments/generate": {
+            "post": {
+                "tags": [
+                    "Tournaments"
+                ],
+                "summary": "Genera un torneo y lo completa",
+                "operationId": "3ecdc26f0e017c191f22798e94fd1f52",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "gender"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Torneo de verano"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "female|male"
+                                    },
+                                    "players": {
+                                        "description": "Array de IDs de usuarios",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Crear torneo"
+                    }
+                }
+            }
+        },
+        "/tournaments/{tournamentId}/play-phase": {
+            "post": {
+                "tags": [
+                    "Tournaments"
+                ],
+                "summary": "Obtiene un torneo por su ID",
+                "description": "Retorna los detalles de un torneo específico basado en su ID.",
+                "operationId": "playPhase",
+                "parameters": [
+                    {
+                        "name": "tournamentId",
+                        "in": "path",
+                        "description": "ID del torneo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Torneo no encontrado"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tournaments",
+            "description": "Tournaments"
+        }
+    ]
+}

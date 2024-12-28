@@ -25,7 +25,6 @@ class UpdateTournamentService {
         }
         
         $tournament->setName($updateTournamentPayload->name());
-        $tournament->setGender($updateTournamentPayload->gender());
 
         $this->persistRepository->persist($tournament);
 

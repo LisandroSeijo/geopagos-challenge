@@ -2,5 +2,6 @@
 
 namespace ATP\Payloads;
 
-interface UpdateTournamentPayload extends CreateTournamentPayload {
+interface UpdateTournamentPayload {
+    public function name(): string;
 }

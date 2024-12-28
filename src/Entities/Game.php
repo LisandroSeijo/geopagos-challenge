@@ -32,8 +32,8 @@ class Game {
     private int $phase;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[ORM\JoinColumn(name: "winner", referencedColumnName: "id", nullable: false)]
-    private Player $winner;
+    #[ORM\JoinColumn(name: "winner", referencedColumnName: "id", nullable: true)]
+    private ?Player $winner = null;
 
     public function __construct(Tournament $tournament, Player $playerOne, Player $playerTwo, int $phase) {
         $this->tournament = $tournament;
@@ -98,7 +98,7 @@ class Game {
         $this->winner = $winner;
     }
 
-    public function getWinner(): Player
+    public function getWinner(): ?Player
     {
         return $this->winner;
     }

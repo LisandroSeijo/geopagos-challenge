@@ -5,14 +5,12 @@ namespace App\Http\Requests;
 use ATP\Entities\Gender;
 use Illuminate\Http\Request;
 use ATP\Payloads\CreateTournamentPayload;
-use Illuminate\Validation\Factory as ValidationFactory;
 
 class CreateTournamentRequest implements CreateTournamentPayload {
     const NAME = 'name';
     const GENDER = 'gender';
     const PLAYERS = 'players';
     private Request $request;
-    private ValidationFactory $validation;
 
     public function __construct(Request $request) {
         $this->request = $request;

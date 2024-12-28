@@ -17,7 +17,6 @@ class UpdateTournamentController extends Controller {
     ): JsonResponse {
         $validator = $this->validator->make($updateTournamentRequest->request()->all(), [
             'name' => 'required|string|max:255',
-            'gender' => ['required', Rule::in(Gender::cases())]
         ]);
 
         if ($validator->fails()) {
