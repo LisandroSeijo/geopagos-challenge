@@ -37,6 +37,10 @@ class Tournament
     #[ORM\OneToMany(targetEntity: Game::class, mappedBy: "match", cascade: ["persist", "remove"])]
     private Collection $games;
 
+    #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[ORM\JoinColumn(name: "winner", referencedColumnName: "id", nullable: false)]
+    private Player $winner;
+
     public function __construct(string $name, Gender $gender, int $countPlayers, int $phases, int $actualPhase) {
         $this->name = $name;
         $this->gender = $gender;
@@ -114,6 +118,16 @@ class Tournament
 
     public function getNextPhase(): int {
         return $this->actualPhase + 1;
+    }
+
+    public function setWinner(Player $winner): void
+    {
+        $this->winner = $winner;
+    }
+
+    public function getWinner(): Player
+    {
+        return $this->winner;
     }
 
     public function inFinalPhase(): bool {

@@ -28,9 +28,9 @@ class PlayPhaseService {
     }
 
     public function excecute(PlayPhasePayload $playPhasePayload): Tournament {
-        $winnersIds = [];
         $tournament = $this->tournamentRepository->findById($playPhasePayload->tournamentId());
-
+        $winnersIds = [];
+        
         if (!$tournament) {
             throw new ResourceNotFoundException('Tournament not found');
         }
@@ -50,6 +50,9 @@ class PlayPhaseService {
         }
 
         if ($tournament->inFinalPhase()) {
+            $tournament->setWinner($winner);
+            $this->persistRepository->persist($game);
+            
             return $tournament;
         }
 
