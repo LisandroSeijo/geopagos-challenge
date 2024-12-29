@@ -15,8 +15,23 @@ class DoctrineTournamentRepository extends DoctrineRepository implements Tournam
         $queryBulder = $this->createQueryBuilder('t');
         
         if ($filter->has(TournamentFilter::NAME)) {
-            $queryBulder->andWhere('t.name = :name')
-            ->setParameter('name', $filter->get(TournamentFilter::NAME));
+            $queryBulder->andWhere('LOWER(t.name) LIKE LOWER(:name)')
+            ->setParameter('name', "%{$filter->get(TournamentFilter::NAME)}%");
+        }
+
+        if ($filter->has(TournamentFilter::GENDER)) {
+            $queryBulder->andWhere('t.gender = :gender')
+            ->setParameter('gender', $filter->get(TournamentFilter::GENDER));
+        }
+        
+        if ($filter->has(TournamentFilter::STATUS)) {
+            $queryBulder->andWhere('t.status = :status')
+            ->setParameter('status', $filter->get(TournamentFilter::STATUS));
+        }
+
+        if ($filter->has(TournamentFilter::WINNER)) {
+            $queryBulder->andWhere('t.winner = :winner')
+            ->setParameter('winner', $filter->get(TournamentFilter::WINNER));
         }
         
         return $this->paginate($queryBulder, $paginate);

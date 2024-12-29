@@ -4,4 +4,8 @@ namespace ATP\Repositories\Filters;
 
 class TournamentFilter extends Filter {
     const NAME = 'name';    
+    const GENDER = 'gender';
+    const STATUS = 'status';
+    const WINNER = 'winner';
+    
 }
