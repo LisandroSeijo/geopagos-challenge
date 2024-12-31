@@ -48,6 +48,6 @@ class CreateTournamentRequest implements CreateTournamentPayload {
             $phases++;
         }
 
-        return $phases;
+        return $phases - 1;
     }
 }

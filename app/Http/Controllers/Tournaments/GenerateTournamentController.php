@@ -72,6 +72,9 @@ class GenerateTournamentController extends Controller {
         return response()->json([
             'success' => true, 
             'data' => [
+                'Tournament' => [
+                    'id' => $tournament->getId(),
+                ],
                 'winner' => $playerTransformer->transform($tournament->getWinner())
             ]
         ], JsonResponse::HTTP_CREATED);
