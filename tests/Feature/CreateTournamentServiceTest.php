@@ -8,19 +8,20 @@ use Tests\DTO\CreateTournamentDTO;
 use Tests\TestCase;
 use ATP\Services\Tournaments\CreateTournamentService;
 use ATP\Repositories\PersistRepository;
-use ATP\Repositories\PlayerRepository;
 use ATP\Services\Games\CreateGameService;
 use ATP\Services\Tournaments\CreatePhaseService;
 use ATP\Entities\Tournament;
 use ATP\Entities\TournamentStatus;
 use ATP\DTO\CreatePhaseDTO;
 use Mockery;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateTournamentServiceTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_create_tournament_service_ok()
     {
-        $persistRepository = Mockery::mock(PersistRepository::class);
+        $persistRepository = app(PersistRepository::class);
         $createGameService = Mockery::mock(CreateGameService::class);
         $createPhaseService = Mockery::mock(CreatePhaseService::class);
 
@@ -35,17 +36,6 @@ class CreateTournamentServiceTest extends TestCase
             Gender::MALE,
             [1, 2, 3, 4, 5, 6, 7, 8]
         );
-
-        $persistRepository->shouldReceive('transactional')
-            ->once()
-            ->with(Mockery::type('callable'))
-            ->andReturnUsing(function ($callback) {
-                return $callback();
-            });
-
-        $persistRepository->shouldReceive('persist')
-            ->once()
-            ->with(Mockery::type(Tournament::class));
 
         $createPhaseService->shouldReceive('excecute')
             ->once()
@@ -64,7 +54,7 @@ class CreateTournamentServiceTest extends TestCase
 
     public function test_create_tournament_service_invalid_players_count()
     {
-        $persistRepository = Mockery::mock(PersistRepository::class);
+        $persistRepository = app(PersistRepository::class);
         $createGameService = Mockery::mock(CreateGameService::class);
         $createPhaseService = Mockery::mock(CreatePhaseService::class);
 
@@ -87,7 +77,7 @@ class CreateTournamentServiceTest extends TestCase
 
     public function test_create_tournament_service_valid_players_count()
     {
-        $persistRepository = Mockery::mock(PersistRepository::class);
+        $persistRepository = app(PersistRepository::class);
         $createGameService = Mockery::mock(CreateGameService::class);
         $createPhaseService = Mockery::mock(CreatePhaseService::class);
 
@@ -102,17 +92,6 @@ class CreateTournamentServiceTest extends TestCase
             Gender::MALE,
             [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]
         );
-
-        $persistRepository->shouldReceive('transactional')
-            ->once()
-            ->with(Mockery::type('callable'))
-            ->andReturnUsing(function ($callback) {
-                return $callback();
-            });
-
-        $persistRepository->shouldReceive('persist')
-            ->once()
-            ->with(Mockery::type(Tournament::class));
 
         $createPhaseService->shouldReceive('excecute')
             ->once()

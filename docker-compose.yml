@@ -10,3 +10,13 @@ services:
     ports:
       - "3306:3306"
     restart: always
+
+  mysql_test:
+    image: mysql:latest
+    container_name: challenge-mysql-test-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+    ports:
+      - "3307:3306"
+    restart: always
