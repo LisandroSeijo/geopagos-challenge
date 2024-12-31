@@ -21,13 +21,11 @@ class CreateTournamentServiceTest extends TestCase
     public function test_create_tournament_service_ok()
     {
         $persistRepository = Mockery::mock(PersistRepository::class);
-        $playerRepository = Mockery::mock(PlayerRepository::class);
         $createGameService = Mockery::mock(CreateGameService::class);
         $createPhaseService = Mockery::mock(CreatePhaseService::class);
 
         $service = new CreateTournamentService(
             $persistRepository,
-            $playerRepository,
             $createGameService,
             $createPhaseService
         );
@@ -67,13 +65,11 @@ class CreateTournamentServiceTest extends TestCase
     public function test_create_tournament_service_invalid_players_count()
     {
         $persistRepository = Mockery::mock(PersistRepository::class);
-        $playerRepository = Mockery::mock(PlayerRepository::class);
         $createGameService = Mockery::mock(CreateGameService::class);
         $createPhaseService = Mockery::mock(CreatePhaseService::class);
 
         $service = new CreateTournamentService(
             $persistRepository,
-            $playerRepository,
             $createGameService,
             $createPhaseService
         );
@@ -92,13 +88,11 @@ class CreateTournamentServiceTest extends TestCase
     public function test_create_tournament_service_valid_players_count()
     {
         $persistRepository = Mockery::mock(PersistRepository::class);
-        $playerRepository = Mockery::mock(PlayerRepository::class);
         $createGameService = Mockery::mock(CreateGameService::class);
         $createPhaseService = Mockery::mock(CreatePhaseService::class);
 
         $service = new CreateTournamentService(
             $persistRepository,
-            $playerRepository,
             $createGameService,
             $createPhaseService
         );

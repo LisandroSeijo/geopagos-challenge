@@ -8,13 +8,10 @@ use ATP\Entities\TournamentStatus;
 use ATP\Exceptions\InvalidTournamentParticipantsNumber;
 use ATP\Repositories\PersistRepository;
 use ATP\Payloads\CreateTournamentPayload;
-use ATP\Repositories\PlayerRepository;
 use ATP\Services\Games\CreateGameService;
 
 class CreateTournamentService {
     protected PersistRepository $persistRepository;
-
-    protected PlayerRepository $playerRepository;
 
     protected CreateGameService $createGameService;
 
@@ -25,12 +22,10 @@ class CreateTournamentService {
 
     public function __construct(
         PersistRepository $persistRepository, 
-        PlayerRepository $playerRepository,
         CreateGameService $createGameService,
         CreatePhaseService $createPhaseService
     ) {
         $this->persistRepository = $persistRepository;
-        $this->playerRepository = $playerRepository;
         $this->createGameService = $createGameService;
         $this->createPhaseService = $createPhaseService;
     }
@@ -69,9 +64,6 @@ class CreateTournamentService {
             );
                         
             $this->createPhaseService->excecute($createPhaseDTO);
-                
-            
-            return $tournament;
         });
 
         return $tournament;
