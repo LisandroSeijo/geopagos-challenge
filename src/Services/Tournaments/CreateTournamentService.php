@@ -2,7 +2,6 @@
 
 namespace ATP\Services\Tournaments;
 
-use App\Events\TournamentCreatedEvent;
 use ATP\DTO\CreatePhaseDTO;
 use ATP\Entities\Tournament;
 use ATP\Entities\TournamentStatus;
@@ -58,6 +57,11 @@ class CreateTournamentService {
     
             $this->persistRepository->persist($tournament);
 
+            // Acá se debería disparar un evento TournamentCreated
+            // y un listener que genere la fase para respetar 
+            // el principio de responsabilidad única
+            //
+            // ...
             $createPhaseDTO = new CreatePhaseDTO(
                 $tournament,
                 $createTournamentPayload->players(),
@@ -74,7 +78,7 @@ class CreateTournamentService {
     }
 
     /**
-     * We need check $playersCount is power of 2
+     * Chequeamos si $playersCount es potencia de 2
      * 
      * @param mixed $playersCount
      * @return bool
