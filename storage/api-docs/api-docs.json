@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "ATP2",
+        "title": "ATP",
         "description": "Documentación de sistem de ATP",
         "version": "1.0.0"
     },
@@ -77,38 +77,6 @@
                     }
                 }
             },
-            "put": {
-                "tags": [
-                    "Tournaments"
-                ],
-                "summary": "Actualiza un nuevo torneo",
-                "operationId": "updateTournament",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "gender"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Torneo de verano"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Crear torneo"
-                    }
-                }
-            },
             "post": {
                 "tags": [
                     "Tournaments"
@@ -179,6 +147,48 @@
                     },
                     "500": {
                         "description": "Error interno del servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tournaments"
+                ],
+                "summary": "Actualiza un nuevo torneo",
+                "operationId": "updateTournament",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del torneo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Torneo de verano"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Crear torneo"
                     }
                 }
             }

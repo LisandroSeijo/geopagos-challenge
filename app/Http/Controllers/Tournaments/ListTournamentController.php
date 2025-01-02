@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 /**
  * @OA\Info(
- *     title="ATP2",
+ *     title="ATP",
  *     version="1.0.0",
  *     description="Documentación de sistem de ATP"
  * )
