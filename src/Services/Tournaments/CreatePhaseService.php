@@ -58,6 +58,8 @@ class CreatePhaseService {
                     throw new AssignInvalidGenderException("No se puede agregar uplayern player {$playerOne->getGender()->value} en este torneo");
                 }
 
+                // Chequear que los players sean ganadores de la fase anterior y/o pertenezcan al tournament
+
                 $createGameDTO = new CreateGameDTO(
                     $tournament, 
                     $playerOne, 
