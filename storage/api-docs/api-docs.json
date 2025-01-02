@@ -13,7 +13,7 @@
                 ],
                 "summary": "Obtiene una lista de torneos",
                 "description": "Retorna una lista de torneos con opciones de filtrado, paginación y ordenación.",
-                "operationId": "getTournaments",
+                "operationId": "listTournaments",
                 "parameters": [
                     {
                         "name": "name",
@@ -77,12 +77,44 @@
                     }
                 }
             },
+            "put": {
+                "tags": [
+                    "Tournaments"
+                ],
+                "summary": "Actualiza un nuevo torneo",
+                "operationId": "updateTournament",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "gender"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Torneo de verano"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Crear torneo"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Tournaments"
                 ],
                 "summary": "Crear un nuevo torneo",
-                "operationId": "4dbb0e5a70942f661dc274658f25ea52",
+                "operationId": "createTournament",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -157,7 +189,7 @@
                     "Tournaments"
                 ],
                 "summary": "Genera un torneo y lo completa",
-                "operationId": "3ecdc26f0e017c191f22798e94fd1f52",
+                "operationId": "generateTournament",
                 "requestBody": {
                     "required": true,
                     "content": {

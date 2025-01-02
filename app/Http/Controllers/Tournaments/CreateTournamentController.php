@@ -18,6 +18,7 @@ class CreateTournamentController extends Controller {
     *     path="/tournaments",
     *     summary="Crear un nuevo torneo",
     *     tags={"Tournaments"},
+    *     operationId="createTournament",
     * @OA\RequestBody(
     *         required=true,
     *         @OA\JsonContent(

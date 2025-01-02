@@ -22,7 +22,7 @@ class ListTournamentController extends Controller {
      *     path="/tournaments",
      *     summary="Obtiene una lista de torneos",
      *     description="Retorna una lista de torneos con opciones de filtrado, paginación y ordenación.",
-     *     operationId="getTournaments",
+     *     operationId="listTournaments",
      *     tags={"Tournaments"},
      *     @OA\Parameter(
      *         name="name",

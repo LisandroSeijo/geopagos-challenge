@@ -20,6 +20,7 @@ class GenerateTournamentController extends Controller {
     *     path="/tournaments/generate",
     *     summary="Genera un torneo y lo completa",
     *     tags={"Tournaments"},
+    *     operationId="generateTournament",
     * @OA\RequestBody(
     *         required=true,
     *         @OA\JsonContent(

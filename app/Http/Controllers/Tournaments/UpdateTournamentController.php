@@ -6,10 +6,27 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateTournamentRequest;
 use ATP\Services\Tournaments\UpdateTournamentService;
-use Illuminate\Validation\Rule;
-use ATP\Entities\Gender;
 
 class UpdateTournamentController extends Controller {   
+    /**
+    * @OA\Put(
+    *     path="/tournaments",
+    *     summary="Actualiza un nuevo torneo",
+    *     tags={"Tournaments"},
+    *     operationId="updateTournament",
+    * @OA\RequestBody(
+    *         required=true,
+    *         @OA\JsonContent(
+    *             required={"name", "gender"},
+    *             @OA\Property(property="name", type="string", example="Torneo de verano"),
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Crear torneo"
+    *     )
+    * )
+    */
     public function handle(
         int $id,
         UpdateTournamentRequest $updateTournamentRequest, 
