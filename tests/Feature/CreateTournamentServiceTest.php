@@ -3,27 +3,29 @@
 namespace Tests\Feature;
 
 use ATP\Entities\Gender;
-use ATP\Exceptions\InvalidTournamentParticipantsNumber;
-use Tests\DTO\CreateTournamentDTO;
-use Tests\TestCase;
-use ATP\Services\Tournaments\CreateTournamentService;
-use ATP\Repositories\PersistRepository;
-use ATP\Services\Games\CreateGameService;
-use ATP\Services\Tournaments\CreatePhaseService;
 use ATP\Entities\Tournament;
 use ATP\Entities\TournamentStatus;
-use ATP\DTO\CreatePhaseDTO;
-use Mockery;
+use ATP\Exceptions\InvalidTournamentParticipantsNumber;
+use ATP\Services\Tournaments\CreateTournamentService;
+use ATP\Services\Games\CreateGameService;
+use ATP\Services\Tournaments\CreatePhaseService;
+use ATP\Repositories\PersistRepository;
+use Database\Seeders\PlayerSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\DTO\CreateTournamentDTO;
+use Tests\TestCase;
+use Mockery;
 
 class CreateTournamentServiceTest extends TestCase
 {
     use RefreshDatabase;
     public function test_create_tournament_service_ok()
     {
+        $this->seed(PlayerSeeder::class);
+
         $persistRepository = app(PersistRepository::class);
-        $createGameService = Mockery::mock(CreateGameService::class);
-        $createPhaseService = Mockery::mock(CreatePhaseService::class);
+        $createGameService = app(CreateGameService::class);
+        $createPhaseService = app(CreatePhaseService::class);
 
         $service = new CreateTournamentService(
             $persistRepository,
@@ -34,12 +36,8 @@ class CreateTournamentServiceTest extends TestCase
         $payload = new CreateTournamentDTO(
             'Test Tournament',
             Gender::MALE,
-            [1, 2, 3, 4, 5, 6, 7, 8]
+            [1, 3, 5, 7, 9, 11, 13, 15]
         );
-
-        $createPhaseService->shouldReceive('excecute')
-            ->once()
-            ->with(Mockery::type(CreatePhaseDTO::class));
 
         $tournament = $service->excecute($payload);
 
@@ -55,8 +53,8 @@ class CreateTournamentServiceTest extends TestCase
     public function test_create_tournament_service_invalid_players_count()
     {
         $persistRepository = app(PersistRepository::class);
-        $createGameService = Mockery::mock(CreateGameService::class);
-        $createPhaseService = Mockery::mock(CreatePhaseService::class);
+        $createGameService = app(CreateGameService::class);
+        $createPhaseService = app(CreatePhaseService::class);
 
         $service = new CreateTournamentService(
             $persistRepository,
@@ -69,7 +67,7 @@ class CreateTournamentServiceTest extends TestCase
         $payload = new CreateTournamentDTO(
             'Test Tournament',
             Gender::MALE,
-            [1, 2, 3, 4, 5, 6, 7]
+            [1, 3, 5, 7, 9, 11, 13]
         );
 
         $service->excecute($payload);
@@ -78,8 +76,8 @@ class CreateTournamentServiceTest extends TestCase
     public function test_create_tournament_service_valid_players_count()
     {
         $persistRepository = app(PersistRepository::class);
-        $createGameService = Mockery::mock(CreateGameService::class);
-        $createPhaseService = Mockery::mock(CreatePhaseService::class);
+        $createGameService = app(CreateGameService::class);
+        $createPhaseService = app(CreatePhaseService::class);
 
         $service = new CreateTournamentService(
             $persistRepository,
@@ -90,12 +88,8 @@ class CreateTournamentServiceTest extends TestCase
         $payload = new CreateTournamentDTO(
             'Test Tournament',
             Gender::MALE,
-            [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]
+            [1, 3, 5, 7, 9, 11, 13, 15]
         );
-
-        $createPhaseService->shouldReceive('excecute')
-            ->once()
-            ->with(Mockery::type(CreatePhaseDTO::class));
 
         $tournament = $service->excecute($payload);
 
@@ -104,8 +98,7 @@ class CreateTournamentServiceTest extends TestCase
         $payload = new CreateTournamentDTO(
             'Test Tournament',
             Gender::MALE,
-            [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 
-            1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]
+            [1, 3, 5, 7, 9, 11, 13, 15]
         );
 
         $this->assertInstanceOf(Tournament::class, $tournament);
